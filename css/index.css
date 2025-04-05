@@ -340,26 +340,41 @@ hr{
 /* -------------- carousel ------------------*/
 .carousel-container {
     overflow: hidden;
-    white-space: nowrap;
     width: 100%;
     max-width: 800px;
+    margin: auto;
 }
-  
+
 .carousel {
-    display: inline-block;
+    display: flex;
     animation: scroll 10s linear infinite;
+    /* Uncomment if you want to start midway
+    animation-delay: -10s; */
 }
-  
+
 .carousel-img {
-    display: inline-block;
+    flex-shrink: 0;
     margin: 0 20px;
 }
-  
+
 @keyframes scroll {
     0% {
         transform: translateX(0);
     }
     100% {
+        transform: translateX(-50%);
+    }
+}
+
+
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* This moves the carousel by 50% of its total width,
+           which should be exactly one set of images */
         transform: translateX(-50%);
     }
 }
