@@ -284,20 +284,27 @@ faqAccordion.forEach(function (btn) {
 document.getElementById("emailForm").addEventListener("submit", function(e) {
     e.preventDefault();
     var formData = new FormData(this);
-    
-    // Use your provided Google Apps Script URL
+  
+    // Your existing Google Apps Script URL
     var scriptURL = 'https://script.google.com/macros/s/AKfycbw5P_caxf6wQqccU9_0IuU_fh0YrIZXpgzDiNLbVKhEfVdnnHoa_jE0HcCHNG4rac6MMg/exec';
-    
+  
     fetch(scriptURL, { method: 'POST', body: formData })
       .then(response => response.json())
       .then(data => {
         var responseMessage = document.getElementById("response-message");
         if (data.result === "success") {
           responseMessage.style.color = "green";
-          responseMessage.textContent = "Success we will be in touch!";
+          responseMessage.textContent = "Success! We will be in touch.";
+  
+          // ---- ADD THIS: Send a "sign_up" event to GA4:
+          gtag('event', 'sign_up', {
+            method: 'Email Form',
+            email: formData.get('email') 
+          });
+  
         } else {
           responseMessage.style.color = "red";
-          responseMessage.textContent = "Failed please get in touch later: " + data.msg;
+          responseMessage.textContent = "Failed. Please get in touch later: " + data.msg;
         }
         // Optionally, reset the form after submission
         document.getElementById("emailForm").reset();
@@ -308,7 +315,6 @@ document.getElementById("emailForm").addEventListener("submit", function(e) {
         document.getElementById("response-message").textContent = "An error occurred. Please try again.";
       });
   });
-
 
 // ------------- reveal section animations ---------------
 
