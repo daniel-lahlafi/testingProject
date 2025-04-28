@@ -497,3 +497,32 @@ hr{
     } */
     
 }
+
+  /* Responsive grid for the first three cards */
+  #cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    justify-items: center;
+  }
+  @media (min-width: 640px) {
+    #cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    #cards-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Switch feature card from column → row */
+  #feature-content {
+    display: flex;
+    flex-direction: column;
+  }
+  @media (min-width: 768px) {
+    #feature-content {
+      flex-direction: row;
+    }
+  }

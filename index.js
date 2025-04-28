@@ -101,49 +101,49 @@ window.addEventListener("resize", responsive)
 
 // }
 // Instantiate and simulate adding feedback
-const detectionApp = new CheatingDetection("#interview-session");
+// const detectionApp = new CheatingDetection("#interview-session");
 
 // Example: simulate adding feedback entries
-function loopFeedback() {
-    setTimeout(() => detectionApp.addFeedback("Keyboard shortcut detected: ..."), 500);
-    setTimeout(() => detectionApp.addFeedback("Chatgpt request detected: ..."), 1500);
-    setTimeout(() => detectionApp.addFeedback("Detected multiple people: ..."), 2500);
-    setTimeout(() => detectionApp.addFeedback("Screenshot detected: ..."), 3500);
-    setTimeout(() => detectionApp.showPopup(), 4000);
+// function loopFeedback() {
+//     setTimeout(() => detectionApp.addFeedback("Keyboard shortcut detected: ..."), 500);
+//     setTimeout(() => detectionApp.addFeedback("Chatgpt request detected: ..."), 1500);
+//     setTimeout(() => detectionApp.addFeedback("Detected multiple people: ..."), 2500);
+//     setTimeout(() => detectionApp.addFeedback("Screenshot detected: ..."), 3500);
+//     setTimeout(() => detectionApp.showPopup(), 4000);
     
-    setTimeout(() => detectionApp.resetFeedback(), 7000);
+//     setTimeout(() => detectionApp.resetFeedback(), 7000);
   
-    setTimeout(loopFeedback, 7500);
-  }
+//     setTimeout(loopFeedback, 7500);
+//   }
   
-  loopFeedback();
+//   loopFeedback();
 
-const promptWindow =  new CheatingDetection("#interview-session")
-const promptForm = document.querySelector("#detection-form")
-const promptInput = promptForm.querySelector("input[name='feedback']")
+// const promptWindow =  new CheatingDetection("#interview-session")
+// const promptForm = document.querySelector("#detection-form")
+// const promptInput = promptForm.querySelector("input[name='feedback']")
 
-const MAX_PROMPTS = 3
+// const MAX_PROMPTS = 3
 
-promptForm.addEventListener("submit", (event) => {
-    event.preventDefault()
+// promptForm.addEventListener("submit", (event) => {
+//     event.preventDefault()
 
-    if (promptWindow.promptList.length >= MAX_PROMPTS)
-        return false
+//     if (promptWindow.promptList.length >= MAX_PROMPTS)
+//         return false
 
-    promptWindow.addPrompt(promptInput.value)
-    promptInput.value = ""
+//     promptWindow.addPrompt(promptInput.value)
+//     promptInput.value = ""
     
-    if (promptWindow.promptList.length >= MAX_PROMPTS){
-        // prompt signup once the user makes 3 prompts, ideally must be throttled via backend API
-        const signUpPrompt = document.querySelector("#signup-prompt")
-        signUpPrompt.classList.add("tw-scale-100")
-        signUpPrompt.classList.remove("tw-scale-0")
+//     if (promptWindow.promptList.length >= MAX_PROMPTS){
+//         // prompt signup once the user makes 3 prompts, ideally must be throttled via backend API
+//         const signUpPrompt = document.querySelector("#signup-prompt")
+//         signUpPrompt.classList.add("tw-scale-100")
+//         signUpPrompt.classList.remove("tw-scale-0")
 
-        promptForm.querySelectorAll("input").forEach(e => {e.disabled = true})
-    }
+//         promptForm.querySelectorAll("input").forEach(e => {e.disabled = true})
+//     }
 
-    return false
-})
+//     return false
+// })
 
 const dropdowns = document.querySelectorAll('.dropdown')
 dropdowns.forEach(dropdown => new Dropdown(`#${dropdown.id}`, promptWindow.setAIModel))
@@ -281,39 +281,46 @@ faqAccordion.forEach(function (btn) {
     })
 })
 
-document.getElementById("emailForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
+var scriptURL = 'https://script.google.com/macros/s/AKfycbw5P_caxf6wQqccU9_0IuU_fh0YrIZXpgzDiNLbVKhEfVdnnHoa_jE0HcCHNG4rac6MMg/exec';
+
+document.querySelectorAll('.email-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      
+      const responseMessage = this.querySelector('.response-message');
+      const submitBtn       = this.querySelector('.submit-email-btn');
+
   
-    // Your existing Google Apps Script URL
-    var scriptURL = 'https://script.google.com/macros/s/AKfycbw5P_caxf6wQqccU9_0IuU_fh0YrIZXpgzDiNLbVKhEfVdnnHoa_jE0HcCHNG4rac6MMg/exec';
+      responseMessage.textContent = 'Loading…';
+      responseMessage.style.color = 'gray';
+      submitBtn.style.display = 'none';
   
-    fetch(scriptURL, { method: 'POST', body: formData })
-      .then(response => response.json())
-      .then(data => {
-        var responseMessage = document.getElementById("response-message");
-        if (data.result === "success") {
-          responseMessage.style.color = "green";
-          responseMessage.textContent = "Success! We will be in touch.";
-  
-          // ---- ADD THIS: Send a "sign_up" event to GA4:
-          gtag('event', 'sign_up', {
-            method: 'Email Form',
-            email: formData.get('email') 
-          });
-  
-        } else {
-          responseMessage.style.color = "red";
-          responseMessage.textContent = "Failed. Please get in touch later: " + data.msg;
-        }
-        // Optionally, reset the form after submission
-        document.getElementById("emailForm").reset();
-      })
-      .catch(error => {
-        console.error("Error!", error.message);
-        document.getElementById("response-message").style.color = "red";
-        document.getElementById("response-message").textContent = "An error occurred. Please try again.";
-      });
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(r => r.json())
+        .then(data => {
+          if (data.result === 'success') {
+            responseMessage.style.color = 'green';
+            responseMessage.textContent = 'Success! We will be in touch.';
+            gtag('event', 'sign_up', {
+              method: 'Email Form',
+              email: formData.get('email')
+            });
+          } else {
+            responseMessage.style.color = 'red';
+            responseMessage.textContent = 'Failed: ' + data.msg;
+          }
+          this.reset();
+        })
+        .catch(err => {
+          console.error(err);
+          responseMessage.style.color = 'red';
+          responseMessage.textContent = 'An error occurred. Please try again.';
+        })
+        .finally(() => {
+          submitBtn.style.display = 'block';
+        });
+    });
   });
 
 // ------------- reveal section animations ---------------
