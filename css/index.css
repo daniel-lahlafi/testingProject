@@ -526,3 +526,62 @@ hr{
       flex-direction: row;
     }
   }
+
+.logo-image {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: auto;
+    z-index: 10;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.logo-image:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .logo-image {
+        width: 120px;
+        top: 15px;
+    }
+}
+
+/* Navigation dropdown styling */
+#nav-dropdown-list-0 {
+  transition: opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
+  transform-origin: top center;
+  z-index: 100;
+}
+
+#nav-dropdown-list-0[data-open="true"] {
+  opacity: 1;
+  transform: scale(1);
+  height: auto;
+  min-height: 450px;
+  pointer-events: all;
+}
+
+#nav-dropdown-list-0[data-open="false"] {
+  opacity: 0;
+  transform: scale(0);
+  pointer-events: none;
+}
+
+/* Make sure the dropdown toggle is clearly interactive */
+#nav-dropdown-toggle-0 {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+#nav-dropdown-toggle-0:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}

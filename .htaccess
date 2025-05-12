@@ -1,0 +1,6 @@
+# Allow access to downloads.html directly
+RewriteEngine On
+RewriteRule ^downloads$ downloads.html [L]
+RewriteRule ^downloads/$ downloads.html [L]
+RewriteRule ^download$ downloads.html [L]
+RewriteRule ^download/$ downloads.html [L] 
