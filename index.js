@@ -168,28 +168,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Remove all existing event listeners by cloning the element
-        const newNavToggle = navToggle.cloneNode(true);
-        navToggle.parentNode.replaceChild(newNavToggle, navToggle);
-        
-        // Get the fresh reference
-        const freshNavToggle = document.querySelector("#nav-dropdown-toggle-0");
-        
-        if (window.innerWidth > RESPONSIVE_WIDTH) {
-          // Desktop behavior
-          collapseHeaderItems.style.height = "";
+        if (navToggle && navToggle.parentNode) {
+          const newNavToggle = navToggle.cloneNode(true);
+          navToggle.parentNode.replaceChild(newNavToggle, navToggle);
           
-          // Add hover behavior for desktop
-          freshNavToggle.addEventListener("mouseenter", openNavDropdown);
-          freshNavToggle.addEventListener("mouseleave", handleNavMouseLeave);
-          navDropdown.addEventListener("mouseleave", closeNavDropdown);
+          // Get the fresh reference
+          const freshNavToggle = document.querySelector("#nav-dropdown-toggle-0");
           
-          // Also add click behavior for accessibility
-          freshNavToggle.addEventListener("click", toggleNavDropdown);
+          if (window.innerWidth > RESPONSIVE_WIDTH) {
+            // Desktop behavior
+            collapseHeaderItems.style.height = "";
+            
+            // Add hover behavior for desktop
+            freshNavToggle.addEventListener("mouseenter", openNavDropdown);
+            freshNavToggle.addEventListener("mouseleave", handleNavMouseLeave);
+            navDropdown.addEventListener("mouseleave", closeNavDropdown);
+            
+            // Also add click behavior for accessibility
+            freshNavToggle.addEventListener("click", toggleNavDropdown);
+          } else {
+            // Mobile behavior
+            isHeaderCollapsed = true;
+            // Only use click for mobile
+            freshNavToggle.addEventListener("click", toggleNavDropdown);
+          }
         } else {
-          // Mobile behavior
-          isHeaderCollapsed = true;
-          // Only use click for mobile
-          freshNavToggle.addEventListener("click", toggleNavDropdown);
+          console.warn('Navigation toggle element or its parent not found');
         }
       }
     }

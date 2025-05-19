@@ -558,6 +558,7 @@ hr{
   transition: opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
   transform-origin: top center;
   z-index: 100;
+  top: 90px !important;
 }
 
 #nav-dropdown-list-0[data-open="true"] {
