@@ -20,11 +20,41 @@ async function loadComponents() {
                     const event = new CustomEvent('headerLoaded');
                     document.dispatchEvent(event);
                 }
+                
+                // If this is the contact-form component, customize it based on data attributes
+                if (componentName === 'contact-form') {
+                    customizeContactForm(element);
+                    if (typeof window.initEmailForms === 'function') {
+                        window.initEmailForms();
+                    }
+                }
             } else {
                 console.error(`Failed to load component: ${componentName}`);
             }
         } catch (error) {
             console.error(`Error loading component ${componentName}:`, error);
+        }
+    }
+}
+
+function customizeContactForm(element) {
+    // Get customization attributes
+    const label = element.getAttribute('data-label');
+    const buttonText = element.getAttribute('data-button-text');
+    
+    // Update the label if provided
+    if (label) {
+        const labelElement = element.querySelector('[data-form-label]');
+        if (labelElement) {
+            labelElement.textContent = label;
+        }
+    }
+    
+    // Update the button text if provided
+    if (buttonText) {
+        const buttonElement = element.querySelector('[data-form-button-text]');
+        if (buttonElement) {
+            buttonElement.textContent = buttonText;
         }
     }
 } 

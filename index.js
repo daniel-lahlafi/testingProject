@@ -294,8 +294,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function initEmailForms() {
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw5P_caxf6wQqccU9_0IuU_fh0YrIZXpgzDiNLbVKhEfVdnnHoa_jE0HcCHNG4rac6MMg/exec';
-    
+
     document.querySelectorAll('.email-form').forEach(form => {
+      // Prevent attaching multiple listeners
+      if (form.dataset.listenerAttached === 'true') return;
+      form.dataset.listenerAttached = 'true';
+
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
@@ -338,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
+  window.initEmailForms = initEmailForms;
 
   // ==================== Animations ====================
 
