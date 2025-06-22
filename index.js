@@ -302,6 +302,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
+        
+        // Check reCAPTCHA
+        var captchaResponse = this.querySelector('.g-recaptcha-response');
+        if (captchaResponse && !captchaResponse.value) {
+          const responseMessage = this.querySelector('.response-message');
+          if (responseMessage) {
+            responseMessage.textContent = 'Please complete the CAPTCHA.';
+            responseMessage.style.color = 'red';
+          }
+          return;
+        }
+        
         const formData = new FormData(this);
         
         const responseMessage = this.querySelector('.response-message');
